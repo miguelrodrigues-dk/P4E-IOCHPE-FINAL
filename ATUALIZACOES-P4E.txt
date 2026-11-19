@@ -1,0 +1,28 @@
+P4E - Atualizacoes desta versao
+
+O que foi alterado
+- Nova pagina publica "Sobre nos" na rota inicial (/), antes do cadastro/login.
+- Navegacao separada entre Eventos e Meus eventos.
+- Area Meus eventos com eventos criados pelo usuario e convites recebidos.
+- Convites privados com token aleatorio; o link pode ser colado na area Meus eventos.
+- Upload local de imagem de perfil e capa de evento (PNG, JPG, WEBP ou GIF, ate 4 MB).
+- Campos de horario de inicio e termino no formato de hora do navegador (HH:MM).
+- Modo claro/escuro acima da opcao de excluir conta.
+- Rodape reorganizado.
+- Senhas novas protegidas com scrypt e salt individual. Senhas antigas em texto puro sao convertidas para hash quando o usuario entra corretamente.
+- Sessao com cookie httpOnly e sameSite, regeneracao de sessao no login/cadastro e bloqueio temporario apos varias tentativas de login.
+- Cabecalhos basicos de seguranca e verificacao de origem em requisicoes POST.
+
+Configuracao de seguranca
+- Em producao, defina SESSION_SECRET com uma chave longa e aleatoria.
+- Para definir a conta administrativa inicial em uma instalacao nova, use ADMIN_EMAIL e ADMIN_PASSWORD.
+- Se ADMIN_PASSWORD nao for definida, uma senha aleatoria sera gerada e exibida uma unica vez no terminal na primeira inicializacao.
+- O projeto usa express-session com armazenamento em memoria. Para publicar o sistema, configure um armazenamento persistente de sessoes.
+
+Importante: nesta versao, eventos, comentarios e a lista de convites compartilhados ainda permanecem em memoria no servidor. Eles podem ser perdidos quando o servidor reiniciar. A migracao completa desses dados para o SQLite deve ser feita antes de usar o P4E em producao.
+
+Para iniciar
+1. Abra a pasta do projeto no terminal.
+2. Execute npm install (especialmente se o SQLite nativo do node_modules nao funcionar no seu computador).
+3. Execute npm run dev.
+4. Acesse http://localhost:3000.

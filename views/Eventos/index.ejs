@@ -1,0 +1,36 @@
+<%- include('../partials/header', { titulo: (paginaMeus ? 'Meus eventos' : 'Eventos') + ' | P4E' }) %>
+<main class="container">
+  <% if (!paginaMeus && destaques.length > 0) { %>
+    <section class="carrossel" aria-label="Destaques de eventos">
+      <% destaques.forEach((evento, indice) => { %>
+        <a class="slide <%= indice === 0 ? 'ativo' : '' %>" href="/eventos/<%= evento.id %>" style="background-image: linear-gradient(90deg, rgba(12,8,20,.88), rgba(12,8,20,.2)), url('<%= evento.imagem %>')">
+          <div class="slide-conteudo"><span class="etiqueta">DESTAQUE P4E</span><h2><%= evento.nome %></h2><p><%= evento.descricao %></p><span class="botao">Conhecer evento</span></div>
+        </a>
+      <% }) %>
+      <% if (destaques.length > 1) { %><button class="seta seta-anterior" type="button" aria-label="Destaque anterior">‹</button><button class="seta seta-proxima" type="button" aria-label="Próximo destaque">›</button><div class="indicadores" aria-label="Selecionar destaque"></div><% } %>
+    </section>
+  <% } %>
+
+  <% if (paginaMeus) { %>
+    <section class="secao-eventos">
+      <div class="cabecalho-secao"><div><span class="sobretitulo">SUA ORGANIZAÇÃO</span><h1>Meus eventos</h1></div><a href="/eventos" class="botao">Explorar eventos</a></div>
+      <h2 class="subtitulo-lista">Criados por mim</h2>
+      <% if (!meusEventos || meusEventos.length === 0) { %><p class="sem-eventos">Você ainda não criou eventos.</p><% } else { %>
+        <div class="grade-eventos"><% meusEventos.forEach(evento => { %><%- include('card-evento', { evento }) %><% }) %></div>
+      <% } %>
+      <h2 class="subtitulo-lista">Compartilhados comigo</h2>
+      <% if (!eventosSalvos || eventosSalvos.length === 0) { %><p class="sem-eventos">Os eventos adicionados por link aparecerão aqui.</p><% } else { %>
+        <div class="grade-eventos"><% eventosSalvos.forEach(evento => { %><%- include('card-evento', { evento }) %><% }) %></div>
+      <% } %>
+    </section>
+    <section class="adicionar-por-link"><h2>Adicionar evento por link</h2><p>Recebeu um convite privado? Cole aqui o link enviado pelo organizador.</p><form action="/eventos/adicionar-link" method="POST"><input type="url" name="linkEvento" placeholder="Cole o link de convite do P4E" required><button class="botao" type="submit">Adicionar à minha lista</button></form></section>
+  <% } else { %>
+    <section id="lista-eventos" class="secao-eventos">
+      <div class="cabecalho-secao"><div><span class="sobretitulo">ENCONTRE SUA PRÓXIMA EXPERIÊNCIA</span><h1>Eventos</h1></div><a href="/eventos/novo" class="botao botao-novo-evento">+ Novo evento</a></div>
+      <% if (!eventos || eventos.length === 0) { %><p class="sem-eventos">Ainda não há eventos cadastrados. Que tal adicionar o primeiro?</p><% } else { %>
+        <div class="grade-eventos"><% eventos.forEach(evento => { %><%- include('card-evento', { evento }) %><% }) %></div>
+      <% } %>
+    </section>
+  <% } %>
+</main>
+<%- include('../partials/footer') %>
